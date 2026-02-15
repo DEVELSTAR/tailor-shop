@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fashion-paradise
+  labels:
+    app: fashion-paradise
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fashion-paradise
+  template:
+    metadata:
+      labels:
+        app: fashion-paradise
+    spec:
+      containers:
+      - name: fashion-paradise
+        image: fashionparadiseregistry.azurecr.io/fashion-paradise:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: RAILS_ENV
+          value: "production"
+        - name: SECRET_KEY_BASE
+          value: "4ddc771f02eeda47beae326137ebfbb152f712cad97edb37a7a301f98f7976f5855d8758bf83124ed9c8e97dcbb8c379aede4baa01de593908fcb4a523550dfb"
+        - name: DATABASE_URL
+          value: "sqlite3:/rails/db/production.sqlite3"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fashion-paradise-service
+spec:
+  selector:
+    app: fashion-paradise
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
