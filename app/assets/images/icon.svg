@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <rect width="256" height="256" rx="32" fill="#6A1B9A"/>
+  <path d="M128 64C108.8 64 96 64C96 64 83.2 83.2 128 128M128 192C108.8 192 128 192M128 128C108.8 128 83.2 128M160 64C140.8 64 160 64M160 96C140.8 96 160 96M160 128C140.8 128 160 128" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="128" y="140" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">FP</text>
+</svg>

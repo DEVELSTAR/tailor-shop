@@ -2,8 +2,11 @@
 <html>
   <head>
     <title><%= content_for?(:title) ? yield(:title) : "Fashion Paradise | Bespoke Tailoring" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="#121212">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#6A1B9A">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= yield :head %>
@@ -14,6 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600;6..96,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <link rel="icon" href="https://img.icons8.com/ios-filled/50/000000/sewing-machine.png" type="image/png">
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
@@ -34,8 +38,11 @@
         </div>
 
         <div class="header-actions">
+          <%= link_to galleries_path, class: "main-nav a hidden sm:block" do %>
+            Gallery
+          <% end %>
           <a href="#contact" class="main-nav a">Visit Us</a>
-          <%= link_to "Consult", "#contact", class: "btn btn-primary btn-sm" %>
+          <%= link_to "Consult", new_booking_path, class: "btn btn-primary btn-sm" %>
           <button class="mobile-menu-toggle" aria-label="Toggle Menu">
             <span></span>
             <span></span>

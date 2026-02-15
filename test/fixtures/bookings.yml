@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  customer: one
+  status: MyString
+  booking_date: 2026-02-16
+  delivery_date: 2026-02-16
+  notes: MyText
+  total_price: 9.99
+
+two:
+  customer: two
+  status: MyString
+  booking_date: 2026-02-16
+  delivery_date: 2026-02-16
+  notes: MyText
+  total_price: 9.99

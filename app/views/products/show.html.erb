@@ -1,0 +1,172 @@
+<% content_for :title, "#{@product.name} | Fashion Paradise" %>
+<% content_for :head do %>
+  <meta name="description" content="<%= @product.name %> - <%= @product.description %> | Fashion Paradise Bengaluru">
+  <meta name="keywords" content="<%= @product.name %>, <%= @product.category.name %>, fashion paradise, bengaluru tailor">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="<%= @product.name %> | Fashion Paradise">
+  <meta property="og:description" content="<%= @product.description %>">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="<%= @product.image.attached? ? url_for(@product.image) : asset_path('icon.svg') %>">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= @product.name %> | Fashion Paradise">
+  <meta name="twitter:description" content="<%= @product.description %>">
+<% end %>
+
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- Back Navigation -->
+    <div class="mb-8">
+      <%= link_to galleries_path, class: "inline-flex items-center text-purple-600 hover:text-purple-700 font-medium" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7 7M5 12l7 7M5 5v7h7V5"></path>
+        </svg>
+        ← Back to Gallery
+      <% end %>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+      <!-- Featured Badge -->
+      <% if @product.featured? %>
+        <div class="bg-amber-500 text-white px-4 py-2 text-sm font-bold text-center">
+          ⭐ Featured Service
+        </div>
+      <% end %>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Product Image -->
+        <div class="lg:col-span-2">
+          <div class="aspect-square bg-gradient-to-br from-purple-100 to-pink-100 relative overflow-hidden">
+            <% if @product.image.attached? %>
+              <%= image_tag @product.image, 
+                   class: "w-full h-full object-cover",
+                   alt: @product.name,
+                   loading: "eager" %>
+            <% else %>
+              <div class="w-full h-full flex items-center justify-center text-purple-600 font-semibold text-lg">
+                FASHION PARADISE
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="p-8">
+          <!-- Category Badge -->
+          <div class="mb-6">
+            <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+              <%= @product.category_name %>
+            </span>
+          </div>
+
+          <!-- Title and Description -->
+          <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <%= @product.name %>
+          </h1>
+          
+          <% if @product.description.present? %>
+            <div class="prose prose-lg text-gray-600 mb-8">
+              <p><%= @product.description %></p>
+            </div>
+          <% end %>
+
+          <!-- Price -->
+          <div class="text-3xl md:text-4xl font-bold text-purple-600 mb-6">
+            <%= @product.formatted_price %>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4">
+            <%= link_to new_booking_path(product_id: @product.id), 
+                class: "flex-1 px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 text-center transition-colors" do %>
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+              </svg>
+              Book This Service
+            <% end %>
+            
+            <%= link_to galleries_path(category_id: @product.category.id), 
+                class: "flex-1 px-6 py-3 bg-white text-purple-600 font-semibold rounded-lg border-2 border-purple-300 hover:bg-purple-50 text-center transition-colors" do %>
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+              </svg>
+              View Similar Services
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Meta Information -->
+        <div class="mt-8 pt-8 border-t border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Service Details</h3>
+          
+          <div class="space-y-3">
+            <div class="flex justify-between">
+              <span class="text-gray-600">Category:</span>
+              <span class="font-medium text-gray-900"><%= @product.category_name %></span>
+            </div>
+            
+            <div class="flex justify-between">
+              <span class="text-gray-600">Price:</span>
+              <span class="font-medium text-gray-900"><%= @product.formatted_price %></span>
+            </div>
+            
+            <div class="flex justify-between">
+              <span class="text-gray-600">Featured:</span>
+              <span class="font-medium text-gray-900">
+                <%= @product.featured? ? "Yes" : "No" %>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <% if @product.category.products.any? %>
+      <div class="mt-16">
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
+          Related <%= @product.category.name %> Services
+        </h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <% @product.category.products.where.not(id: @product.id).limit(8).each do |related| %>
+            <div class="group relative bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+              <div class="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 relative">
+                <% if related.image.attached? %>
+                  <%= link_to product_path(related), class: "block w-full h-full" do %>
+                    <%= image_tag related.image, 
+                         class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300",
+                         alt: related.name,
+                         loading: "lazy" %>
+                  <% end %>
+                <% else %>
+                  <div class="w-full h-full flex items-center justify-center text-gray-500 font-semibold text-sm">
+                    FASHION PARADISE
+                  </div>
+                <% end %>
+              </div>
+              
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+                  <h4 class="text-sm font-bold mb-1 line-clamp-1">
+                    <%= related.name %>
+                  </h4>
+                  <span class="text-xs text-white/80">
+                    <%= related.category_name %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Back to Home -->
+    <div class="mt-16 text-center">
+      <%= link_to "← Back to Home", root_path, class: "text-purple-600 hover:text-purple-700 font-medium" %>
+    </div>
+  </div>
+</div>

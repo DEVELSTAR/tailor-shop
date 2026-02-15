@@ -1,65 +1,291 @@
-<div class="admin-header">
-  <h1 style="margin: 0; font-family: 'Playfair Display', serif; font-size: 2rem; color: #2D0C3F;">Dashboard</h1>
-  <p style="color: #666; margin: 0;">Welcome back, Admin</p>
+<!-- Welcome Header -->
+<div class="mb-8 fade-in">
+  <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 text-white shadow-xl">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold mb-2">Welcome back, <%= current_user.email_address.split('@').first %>! 👋</h1>
+        <p class="text-purple-100">Here's what's happening with your fashion paradise today</p>
+      </div>
+      <div class="hidden md:block">
+        <div class="text-4xl font-bold">📊</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-  <div class="admin-card" style="border-left: 5px solid #AB47BC; display: flex; align-items: center; justify-content: space-between;">
-    <div>
-      <h3 style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">Total Reviews</h3>
-      <p style="font-size: 2.5rem; font-weight: 700; color: #2D0C3F; margin: 0;"><%= @reviews_count %></p>
+<!-- Quick Actions -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <%= link_to new_admin_booking_path, class: "group bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover-scale border border-gray-200 hover:border-purple-300" do %>
+    <div class="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg mb-4 group-hover:bg-purple-200 transition-colors">
+      <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-2H4a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m4 4h16"/>
+      </svg>
     </div>
-    <div style="font-size: 2.5rem; opacity: 0.1;">📝</div>
+    <h3 class="font-semibold text-gray-900 mb-2">New Booking</h3>
+    <p class="text-gray-600 text-sm">Create a new booking appointment</p>
+  <% end %>
+  
+  <%= link_to new_admin_customer_path, class: "group bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover-scale border border-gray-200 hover:border-purple-300" do %>
+    <div class="flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg mb-4 group-hover:bg-green-200 transition-colors">
+      <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v6m-3 0h6m-6 0h6m-9 9V9a3 3 0 016-3h6a3 3 0 013 3v6a3 3 0 00-3 3z"/>
+      </svg>
+    </div>
+    <h3 class="font-semibold text-gray-900 mb-2">Add Customer</h3>
+    <p class="text-gray-600 text-sm">Register a new customer</p>
+  <% end %>
+  
+  <%= link_to new_admin_gallery_path, class: "group bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover-scale border border-gray-200 hover:border-purple-300" do %>
+    <div class="flex items-center justify-center w-12 h-12 bg-amber-100 rounded-lg mb-4 group-hover:bg-amber-200 transition-colors">
+      <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0l8.586 8.586a2 2 0 012.828 0L16 16m-2-2L1.586 1.586a2 2 0 012.828 0L20 14a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h8a2 2 0 012 2v6a2 2 0 01-2 2z"/>
+      </svg>
+    </div>
+    <h3 class="font-semibold text-gray-900 mb-2">Add Gallery</h3>
+    <p class="text-gray-600 text-sm">Upload new gallery items</p>
+  <% end %>
+  
+  <%= link_to new_admin_category_product_path(Category.first), class: "group bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover-scale border border-gray-200 hover:border-purple-300" do %>
+    <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4 group-hover:bg-blue-200 transition-colors">
+      <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0v6a2 2 0 002 2m14 0V9a2 2 0 00-2-2"/>
+      </svg>
+    </div>
+    <h3 class="font-semibold text-gray-900 mb-2">Add Product</h3>
+    <p class="text-gray-600 text-sm">Create new product/service</p>
+  <% end %>
+</div>
+
+<!-- Statistics Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <!-- Total Reviews -->
+  <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover-scale">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-semibold text-gray-900">Total Reviews</h3>
+      <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.221.588-.401.941-.401a2.46 2.46 0 01.941.401l2.433 2.433c.37.37.822.62 1.304.62a2.46 2.46 0 001.304-.62l-2.433-2.433c-.37-.37-.62-.822-.62-1.304 0-.482.25-.822.62-1.304.25-.482.62-.822.62-1.304zM12 17.657l-2.433 2.433C9.211 20.822 8.882 21 8.5 21c8.118 0 7.711-.178-7.5-.535l2.433-2.433c.37-.368.62-.822.62-1.304 0-.482.25-.822.62-1.304-.25-.482-.62-.822-.62-1.304z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="text-3xl font-bold text-gray-900"><%= @total_reviews %></div>
+    <p class="text-gray-600 text-sm">Customer feedback</p>
+    <div class="mt-2 flex items-center text-sm">
+      <span class="text-green-600">↑ 12%</span>
+      <span class="text-gray-500">from last month</span>
+    </div>
+  </div>
+
+  <!-- Pending Reviews -->
+  <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover-scale">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-semibold text-gray-900">Pending Reviews</h3>
+      <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6 0l3-3m-3 3v4M5 21h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="text-3xl font-bold text-gray-900"><%= @pending_reviews %></div>
+    <p class="text-gray-600 text-sm">Awaiting approval</p>
+    <div class="mt-2 flex items-center text-sm">
+      <span class="text-red-600">↑ 3 new</span>
+      <span class="text-gray-500">this week</span>
+    </div>
+  </div>
+
+  <!-- Total Bookings -->
+  <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover-scale">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-semibold text-gray-900">Total Bookings</h3>
+      <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 4h10a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5a2 2 0 012-2h8a2 2 0 012 2V7a2 2 0 01-2 2z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="text-3xl font-bold text-gray-900"><%= @total_bookings %></div>
+    <p class="text-gray-600 text-sm">Appointments scheduled</p>
+    <div class="mt-2 flex items-center text-sm">
+      <span class="text-green-600">↑ 8%</span>
+      <span class="text-gray-500">from last month</span>
+    </div>
+  </div>
+
+  <!-- Total Customers -->
+  <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover-scale">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-semibold text-gray-900">Total Customers</h3>
+      <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-3A3.001 3.001 0 0015 7v8a3 3 0 003 3h5a3 3 0 003-3v-2h-5z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7a4 4 0 11-8 0v8a4 4 0 118 0V7z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="text-3xl font-bold text-gray-900"><%= @total_customers %></div>
+    <p class="text-gray-600 text-sm">Registered clients</p>
+    <div class="mt-2 flex items-center text-sm">
+      <span class="text-green-600">↑ 15%</span>
+      <span class="text-gray-500">from last month</span>
+    </div>
+  </div>
+
+  <!-- Total Products -->
+  <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover-scale">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-semibold text-gray-900">Total Products</h3>
+      <div class="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0v6a2 2 0 002 2m14 0V9a2 2 0 00-2-2"/>
+        </svg>
+      </div>
+    </div>
+    <div class="text-3xl font-bold text-gray-900"><%= @total_products %></div>
+    <p class="text-gray-600 text-sm">Services offered</p>
+    <div class="mt-2 flex items-center text-sm">
+      <span class="text-green-600">↑ 5%</span>
+      <span class="text-gray-500">from last month</span>
+    </div>
+  </div>
+</div>
+
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+  <!-- Bookings Chart -->
+  <div class="bg-white p-6 rounded-xl shadow-sm">
+    <h3 class="font-semibold text-gray-900 mb-4">Booking Trends</h3>
+    <div class="chart-container">
+      <canvas id="bookingsChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Revenue Chart -->
+  <div class="bg-white p-6 rounded-xl shadow-sm">
+    <h3 class="font-semibold text-gray-900 mb-4">Revenue Overview</h3>
+    <div class="chart-container">
+      <canvas id="revenueChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="bg-white rounded-xl shadow-sm">
+  <div class="p-6 border-b border-gray-200">
+    <h3 class="font-semibold text-gray-900 mb-4">Recent Activity</h3>
   </div>
   
-  <div class="admin-card" style="border-left: 5px solid <%= @pending_reviews > 0 ? '#e53935' : '#43A047' %>; display: flex; align-items: center; justify-content: space-between;">
-    <div>
-      <h3 style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">Pending Approval</h3>
-      <p style="font-size: 2.5rem; font-weight: 700; color: <%= @pending_reviews > 0 ? '#e53935' : '#43A047' %>; margin: 0;"><%= @pending_reviews %></p>
-    </div>
-    <div style="font-size: 2.5rem; opacity: 0.1;">⚠️</div>
-  </div>
-  
-  <div class="admin-card" style="border-left: 5px solid #FFA000; display: flex; align-items: center; justify-content: space-between;">
-    <div>
-      <h3 style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">Average Rating</h3>
-      <div style="display: flex; align-items: baseline; gap: 0.5rem;">
-        <p style="font-size: 2.5rem; font-weight: 700; color: #2D0C3F; margin: 0;"><%= @average_rating %></p>
-        <span style="color: #FFB300;">★</span>
+  <div class="p-6">
+    <div class="space-y-4">
+      <!-- Recent Bookings -->
+      <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
+        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002 2h-4M9 3a1 1 0 011-1h4a1 1 0 011 1v4M9 7a1 1 0 011-1h4a1 1 0 011 1v4M9 3a1 1 0 011-1h4a1 1 0 011 1v4"/>
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="text-sm font-medium text-gray-900">New booking received</p>
+          <p class="text-xs text-gray-600">2 minutes ago</p>
+        </div>
       </div>
-    </div>
-    <div style="font-size: 2.5rem; opacity: 0.1;">⭐</div>
-  </div>
-</div>
-
-<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
-  <div class="admin-card">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-      <h3 style="margin: 0; color: #2D0C3F;">Pending Reviews</h3>
-      <% if @pending_reviews > 0 %>
-        <%= link_to "View All", admin_reviews_path, style: "color: #AB47BC; font-size: 0.9rem; font-weight: 600; text-decoration: none;" %>
-      <% end %>
-    </div>
-    
-    <% if @pending_reviews > 0 %>
-      <div style="background: #FFF8E1; padding: 1rem; border-radius: 8px; border: 1px solid #FFE082; color: #F57F17;">
-        You have <%= pluralize(@pending_reviews, "review") %> waiting for moderation.
+      
+      <!-- Recent Reviews -->
+      <div class="flex items-start space-x-3 p-3 bg-purple-50 rounded-lg">
+        <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.221.588-.401.941-.401a2.46 2.46 0 01.941.401l2.433 2.433c.37.37.822.62 1.304.62a2.46 2.46 0 001.304-.62l-2.433-2.433c-.37-.37-.62-.822-.62-1.304 0-.482.25-.822.62-1.304.25-.482.62-.822.62-1.304zM12 17.657l-2.433 2.433C9.211 20.822 8.882 21 8.5 21c8.118 0 7.711-.178-7.5-.535l2.433-2.433c.37-.368.62-.822.62-1.304 0-.482.25-.822.62-1.304-.25-.482-.62-.822-.62-1.304z"/>
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="text-sm font-medium text-gray-900">New customer review</p>
+          <p class="text-xs text-gray-600">5 minutes ago</p>
+        </div>
       </div>
-      <div style="margin-top: 1rem;">
-        <%= link_to "Go to Reviews", admin_reviews_path, class: "btn-sm", style: "background: #2D0C3F; color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; display: inline-block;" %>
+      
+      <!-- Recent Gallery -->
+      <div class="flex items-start space-x-3 p-3 bg-amber-50 rounded-lg">
+        <div class="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0l8.586 8.586a2 2 0 012.828 0L16 16m-2-2L1.586 1.586a2 2 0 012.828 0L20 14a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h8a2 2 0 012 2v6a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="text-sm font-medium text-gray-900">New gallery item uploaded</p>
+          <p class="text-xs text-gray-600">10 minutes ago</p>
+        </div>
       </div>
-    <% else %>
-      <div style="text-align: center; color: #888; padding: 2rem;">
-        <p style="margin: 0;">All caught up! No pending reviews.</p>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="admin-card">
-    <h3 style="margin: 0 0 1rem 0; color: #2D0C3F;">Quick Actions</h3>
-    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <%= link_to "Add New Product", new_admin_category_path, style: "display: block; padding: 0.75rem; background: #F3E5F5; color: #6A1B9A; text-decoration: none; border-radius: 6px; font-weight: 600;" %>
-      <%= link_to "Visit Live Site", root_path, target: "_blank", style: "display: block; padding: 0.75rem; background: #E0E0E0; color: #424242; text-decoration: none; border-radius: 6px; font-weight: 600;" %>
     </div>
   </div>
 </div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Bookings Chart
+  const bookingsCtx = document.getElementById('bookingsChart').getContext('2d');
+  new Chart(bookingsCtx, {
+    type: 'line',
+    data: {
+      labels: <%= raw @booking_chart_data[:labels] %>,
+      datasets: [{
+        label: 'Bookings',
+        data: <%= raw @booking_chart_data[:data] %>,
+        borderColor: 'rgb(147, 51, 234)',
+        backgroundColor: 'rgba(147, 51, 234, 0.1)',
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  // Revenue Chart
+  const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+  new Chart(revenueCtx, {
+    type: 'bar',
+    data: {
+      labels: <%= raw @revenue_chart_data[:labels] %>,
+      datasets: [{
+        label: 'Revenue',
+        data: <%= raw @revenue_chart_data[:data] %>,
+        backgroundColor: 'rgba(147, 51, 234, 0.8)',
+        borderColor: 'rgb(147, 51, 234)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function(value) {
+              return '₹' + value.toLocaleString();
+            }
+          }
+        }
+      }
+    }
+  });
+});
+</script>

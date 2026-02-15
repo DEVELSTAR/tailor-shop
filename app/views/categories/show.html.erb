@@ -1,0 +1,150 @@
+<% content_for :title, "#{@category.name} | Fashion Paradise" %>
+<% content_for :head do %>
+  <meta name="description" content="<%= @category.name %> - <%= @category.description %> | Fashion Paradise Bengaluru">
+  <meta name="keywords" content="<%= @category.name %>, <%= @category.products.map(&:name).join(', ') %>, fashion paradise, bengaluru tailor">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="<%= @category.name %> | Fashion Paradise">
+  <meta property="og:description" content="<%= @category.description %>">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="<%= @category.galleries.featured.first&.image.attached? ? url_for(@category.galleries.featured.first.image) : asset_path('icon.svg') %>">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= @category.name %> | Fashion Paradise">
+  <meta name="twitter:description" content="<%= @category.description %>">
+<% end %>
+
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- Back Navigation -->
+    <div class="mb-8">
+      <%= link_to galleries_path, class: "inline-flex items-center text-purple-600 hover:text-purple-700 font-medium" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7 7M5 12l7 7M5 5v7h7V5"></path>
+        </svg>
+        ← Back to Gallery
+      <% end %>
+    </div>
+
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <%= @category.name %>
+      </h1>
+      <% if @category.description.present? %>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          <%= @category.description %>
+        </p>
+      <% end %>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <% @category.products.each do |product| %>
+        <div class="group relative bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
+          <!-- Featured Badge -->
+          <% if product.featured? %>
+            <div class="absolute top-4 right-4 z-10">
+              <span class="px-3 py-1 bg-amber-500 text-white text-xs font-bold rounded-full">
+                Featured
+              </span>
+            </div>
+          <% end %>
+          
+          <!-- Image -->
+          <div class="aspect-square bg-gradient-to-br from-purple-100 to-pink-100 relative overflow-hidden">
+            <% if product.image.attached? %>
+              <%= link_to product_path(product), class: "block w-full h-full" do %>
+                <%= image_tag product.image, 
+                     class: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-500",
+                     alt: product.name,
+                     loading: "lazy" %>
+              <% end %>
+            <% else %>
+              <div class="w-full h-full flex items-center justify-center text-purple-600 font-semibold">
+                FASHION PARADISE
+              </div>
+            <% end %>
+          </div>
+          
+          <!-- Content Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+              <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                <!-- Title -->
+                <h3 class="text-xl font-bold mb-2">
+                  <%= product.name %>
+                </h3>
+                
+                <!-- Description -->
+                <% if product.description.present? %>
+                  <p class="text-white/90 text-sm line-clamp-2">
+                    <%= truncate(product.description, length: 100) %>
+                  </p>
+                <% end %>
+                
+                <!-- Price and Action -->
+                <div class="flex items-center justify-between">
+                  <div class="text-2xl font-bold">
+                    <%= product.formatted_price %>
+                  </div>
+                  <%= link_to new_booking_path(product_id: product.id), 
+                      class: "px-4 py-2 bg-white text-purple-900 text-sm font-semibold rounded-lg hover:bg-gray-100 transition-colors" do %>
+                    Book Now
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Gallery Section -->
+    <% if @category.galleries.any? %>
+      <div class="mt-16">
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
+          <%= @category.name %> Gallery
+        </h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <% @category.galleries.featured.recent.limit(8).each do |gallery| %>
+            <div class="group relative bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+              <div class="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 relative">
+                <% if gallery.image.attached? %>
+                  <%= link_to gallery_path(gallery), class: "block w-full h-full" do %>
+                    <%= image_tag gallery.image, 
+                         class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300",
+                         alt: gallery.title,
+                         loading: "lazy" %>
+                  <% end %>
+                <% else %>
+                  <div class="w-full h-full flex items-center justify-center text-gray-500 font-semibold text-sm">
+                    FASHION PARADISE
+                  </div>
+                <% end %>
+              </div>
+              
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+                  <h4 class="text-sm font-bold mb-1 line-clamp-1">
+                    <%= gallery.title %>
+                  </h4>
+                  <span class="text-xs text-white/80">
+                    <%= gallery.category_name %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Back to Home -->
+    <div class="mt-16 text-center">
+      <%= link_to "← Back to Home", root_path, class: "text-purple-600 hover:text-purple-700 font-medium" %>
+    </div>
+  </div>
+</div>

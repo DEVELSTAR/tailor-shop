@@ -5,9 +5,16 @@ Rails.application.routes.draw do
       resource :business_info, only: [:show], controller: :business_infos
     end
   end
+  
   root "home#index"
 
   resources :reviews, only: [:index, :new, :create]
+  resources :bookings, only: [:new, :create]
+  resources :galleries, only: [:index, :show]
+  
+  # Add routes for sitemap generation
+  resources :categories, only: [:show]
+  resources :products, only: [:show]
 
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
@@ -21,9 +28,11 @@ Rails.application.routes.draw do
       resources :products, only: [:index, :new, :create]
     end
     resources :products, except: [:index, :new, :create]
+    resources :customers
+    resources :bookings
+    resources :galleries
   end
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
+  
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
@@ -32,6 +41,6 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
+  # Defines the root path route ("/") 
   # root "posts#index"
 end
