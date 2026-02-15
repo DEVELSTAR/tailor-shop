@@ -1,0 +1,32 @@
+<%= turbo_frame_tag "new_review" do %>
+  <%= form_with(model: review, id: "new_review_form", class: "review-form") do |form| %>
+    <% if review.errors.any? %>
+      <div style="color: #D32F2F; margin-bottom: 1rem; background: #FFCDD2; padding: 1rem; border-radius: var(--radius-normal);">
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <% review.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div style="margin-bottom: 1.5rem;">
+      <%= form.label :reviewer_name, "Your Name", class: "form-label" %>
+      <%= form.text_field :reviewer_name, class: "form-input", placeholder: "e.g., Jane Doe", required: true %>
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+      <%= form.label :rating, "Rating", class: "form-label" %>
+      <%= form.select :rating, [5, 4, 3, 2, 1], {}, class: "form-select" %>
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+      <%= form.label :comment, "Your Experience", class: "form-label" %>
+      <%= form.text_area :comment, rows: 4, class: "form-textarea", placeholder: "Tell us what you liked...", required: true %>
+    </div>
+
+    <div style="text-align: center;">
+      <%= form.submit "Send Review", class: "btn btn-primary", style: "width: 100%;" %>
+    </div>
+  <% end %>
+<% end %>

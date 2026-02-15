@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin - Fashion Paradise</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <link rel="icon" href="https://img.icons8.com/fluency/48/sewing-machine.png" type="image/png">
+  
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+  
+  <style>
+    :root {
+      --admin-sidebar-width: 260px;
+      --admin-header-height: 60px;
+      --admin-bg: #f3f4f6;
+      --admin-sidebar-bg: #2D0C3F;
+      --admin-primary: #6A1B9A;
+    }
+
+    body {
+      background-color: var(--admin-bg);
+      font-family: 'Lato', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Layout Grid */
+    .admin-layout {
+      display: grid;
+      grid-template-columns: var(--admin-sidebar-width) 1fr;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .admin-sidebar {
+      background: var(--admin-sidebar-bg);
+      color: white;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+    }
+
+    .admin-logo {
+      height: var(--admin-header-height);
+      display: flex;
+      align-items: center;
+      padding: 0 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #FFD54F;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .admin-nav {
+      flex: 1;
+      padding: 1.5rem 0;
+      overflow-y: auto;
+    }
+
+    .nav-group-label {
+      padding: 0.75rem 1.5rem 0.25rem;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.4);
+      font-weight: 700;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1.5rem;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border-left-color: #AB47BC;
+    }
+
+    .nav-link i { margin-right: 0.75rem; width: 20px; text-align: center; }
+
+    /* Main Content */
+    .admin-main {
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    .admin-topbar {
+      height: var(--admin-header-height);
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      justify-content: flex-end; /* Align content to right by default on desktop */
+    }
+
+    .mobile-toggle {
+      display: none; /* Hidden on desktop */
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #374151;
+      padding: 0;
+      margin-right: 1rem;
+    }
+
+    .admin-content {
+      padding: 2rem;
+      flex: 1;
+    }
+
+    /* Components */
+    .admin-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .btn-icon:hover { background: #f3f4f6; }
+
+    /* Alerts */
+    .alert { padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; }
+    .alert-notice { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+    .alert-alert { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+    /* Mobile Responsive */
+    @media (max-width: 1024px) {
+      .admin-layout {
+        display: block; /* Remove grid */
+      }
+
+      .admin-sidebar {
+        position: fixed;
+        left: -100%; /* Hide off-screen */
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        transition: left 0.3s ease;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+      }
+
+      .admin-sidebar.open {
+        left: 0;
+      }
+
+      .admin-topbar {
+        justify-content: space-between; /* Logo on left, logout on right maybe */
+        padding: 0 1rem;
+        position: sticky;
+        top: 0;
+        z-index: 900;
+        background: white;
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+
+      /* Mobile Logo in Topbar */
+      .mobile-logo {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--admin-primary);
+      }
+
+      .admin-content {
+        padding: 1rem;
+      }
+      
+      .admin-logo {
+        display: none; /* Hide sidebar logo on mobile since we have topbar logo/toggle */
+      }
+      
+      /* Show sidebar logo inside sidebar for context when open? Or keep simple. */
+      .admin-sidebar .admin-logo {
+        display: flex; /* Show it inside the drawer */
+      }
+    }
+
+    /* Backdrop */
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .sidebar-backdrop.show {
+      display: block;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Backdrop for mobile -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-logo">
+        Fashion Paradise
+      </div>
+      
+      <nav class="admin-nav">
+        <div class="nav-group-label">Overview</div>
+        <%= link_to admin_root_path, class: "nav-link #{'active' if current_page?(admin_root_path)}" do %>
+          <span>Dashboard</span>
+        <% end %>
+
+        <div class="nav-group-label">Management</div>
+        <%= link_to admin_categories_path, class: "nav-link #{'active' if request.path.include?('categories') || request.path.include?('products')}" do %>
+          <span>Catalogue</span>
+        <% end %>
+        <%= link_to admin_reviews_path, class: "nav-link #{'active' if request.path.include?('reviews')}" do %>
+          <span>Reviews</span>
+        <% end %>
+
+        <div class="nav-group-label">Settings</div>
+        <% if BusinessInfo.first %>
+          <%= link_to edit_admin_business_info_path(BusinessInfo.first), class: "nav-link #{'active' if request.path.include?('business_infos')}" do %>
+            <span>Business Info</span>
+          <% end %>
+        <% end %>
+        
+        <div style="margin-top: auto; padding: 1.5rem;">
+          <%= button_to logout_path, method: :delete, class: "nav-link", style: "background: rgba(0,0,0,0.2); border-radius: 6px; justify-content: center; width: 100%; box-sizing: border-box; cursor: pointer; border: none;" do %>
+            Sign Out
+          <% end %>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <div style="display: flex; align-items: center;">
+          <button class="mobile-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">
+            ☰
+          </button>
+          <span class="mobile-logo d-lg-none" style="display: none;">Fashion Paradise</span>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span style="font-size: 0.9rem; color: #666;">Admin</span>
+          <div style="width: 32px; height: 32px; background: #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            👤
+          </div>
+        </div>
+      </header>
+
+      <div class="admin-content">
+        <% if flash[:notice] %>
+          <div class="alert alert-notice"><%= flash[:notice] %></div>
+        <% end %>
+        <% if flash[:alert] %>
+          <div class="alert alert-alert"><%= flash[:alert] %></div>
+        <% end %>
+
+        <%= yield %>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('turbo:load', function() {
+      const toggle = document.getElementById('sidebarToggle');
+      const sidebar = document.getElementById('adminSidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      
+      // Mobile Logo logic
+      const mobileLogo = document.querySelector('.mobile-logo');
+      if (window.innerWidth <= 1024) {
+        if(mobileLogo) mobileLogo.style.display = 'block';
+      }
+
+      function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        backdrop.classList.toggle('show');
+      }
+
+      function closeSidebar() {
+        sidebar.classList.remove('open');
+        backdrop.classList.remove('show');
+      }
+
+      if (toggle) toggle.addEventListener('click', toggleSidebar);
+      if (backdrop) backdrop.addEventListener('click', closeSidebar);
+      
+      // Close sidebar on navigation (mobile)
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 1024) closeSidebar();
+        });
+      });
+    });
+  </script>
+</body>
+</html>

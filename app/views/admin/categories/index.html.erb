@@ -1,0 +1,89 @@
+<div style="background: white; border-bottom: 1px solid #eee; padding: 1.5rem 0; margin-bottom: 2rem;">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <h1 style="font-family: 'Playfair Display', serif; font-size: 2rem; color: #2D0C3F;">Catalogue Management</h1>
+      <p style="color: #666;">Organize your categories and products.</p>
+    </div>
+    <%= link_to "New Category", new_admin_category_path, class: "btn btn-primary" %>
+  </div>
+</div>
+
+<% if @categories.any? %>
+  <div style="display: grid; gap: 2rem;">
+    <% @categories.each do |category| %>
+      <div class="admin-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+          <div>
+            <h2 style="font-size: 1.25rem; color: #6A1B9A; margin-bottom: 0.25rem;"><%= category.name %></h2>
+            <% if category.description.present? %>
+              <p style="font-size: 0.9rem; color: #888; font-style: italic;"><%= category.description %></p>
+            <% end %>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <%= link_to "Edit", edit_admin_category_path(category), class: "btn btn-sm btn-outlined" %>
+            <%= button_to "Delete", admin_category_path(category), method: :delete, form: { data: { turbo_confirm: "Delete this category and all its products?" } }, class: "btn btn-sm", style: "background: #ffebee; color: #c62828; border: 1px solid #ffcdd2;" %>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h4 style="font-size: 0.9rem; text-transform: uppercase; color: #666; letter-spacing: 1px;">Products (<%= category.products.count %>)</h4>
+          <%= link_to "Add Product", new_admin_category_product_path(category), class: "btn btn-sm", style: "background: #E8F5E9; color: #2E7D32; border: 1px solid #C8E6C9;" %>
+        </div>
+
+        <% if category.products.any? %>
+          <div style="background: #FAFAFA; border-radius: 8px; border: 1px solid #eee; overflow: hidden;">
+            <table class="table" style="margin-bottom: 0;">
+              <thead>
+                <tr style="background: #F5F5F5;">
+                  <th style="width: 60px;">Image</th>
+                  <th>Name</th>
+                  <th style="text-align: right;">Price</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% category.products.each do |product| %>
+                  <tr>
+                    <td style="padding: 0.75rem;">
+                      <% if product.image.attached? %>
+                        <%= image_tag product.image, style: "width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" %>
+                      <% else %>
+                        <div style="width: 40px; height: 40px; background: #eee; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 0.7rem;">None</div>
+                      <% end %>
+                    </td>
+                    <td style="font-weight: 500;">
+                      <%= product.name %>
+                      <% if product.description.present? %>
+                        <div style="font-size: 0.8rem; color: #888; margin-top: 0.2rem;"><%= product.description.truncate(50) %></div>
+                      <% end %>
+                    </td>
+                    <td style="text-align: right; font-family: monospace; font-size: 1rem;">
+                      <%= number_to_currency(product.price, unit: "₹") %>
+                    </td>
+                    <td style="text-align: right;">
+                      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                        <%= link_to "Edit", edit_admin_product_path(product), class: "btn btn-sm", style: "padding: 0.2rem 0.5rem; font-size: 0.8rem; background: #fff; border: 1px solid #ddd; color: #555;" %>
+                        <%= button_to "×", admin_product_path(product), method: :delete, form: { data: { turbo_confirm: "Delete product?" } }, class: "btn btn-sm", style: "padding: 0.2rem 0.6rem; font-size: 0.9rem; background: #fff; border: 1px solid #ddd; color: #e53935; cursor: pointer;" %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <div style="text-align: center; padding: 2rem; background: #FAFAFA; border-radius: 8px; border: 1px dashed #ddd; color: #888;">
+            No products yet. Add one to get started!
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div style="text-align: center; padding: 4rem; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+    <div style="font-size: 3rem; color: #ddd; margin-bottom: 1rem;">📂</div>
+    <h2 style="color: #444; margin-bottom: 0.5rem;">Catalogue Empty</h2>
+    <p style="color: #666; margin-bottom: 2rem;">Start by creating your first product category.</p>
+    <%= link_to "Create Category", new_admin_category_path, class: "btn btn-primary" %>
+  </div>
+<% end %>

@@ -1,0 +1,45 @@
+<%= form_with(model: product, url: url, local: true, class: "admin-card", style: "max-width: 600px; margin-top: 1.5rem;") do |form| %>
+  <% if product.errors.any? %>
+    <div class="alert alert-alert">
+      <h4 style="margin: 0 0 0.5rem 0;"><%= pluralize(product.errors.count, "error") %> found:</h4>
+      <ul style="margin: 0; padding-left: 1.2rem;">
+        <% product.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div style="margin-bottom: 1.5rem;">
+    <%= form.label :name, class: "form-label", style: "display: block; margin-bottom: 0.5rem; font-weight: 600;" %>
+    <%= form.text_field :name, class: "form-input", style: "width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px;", required: true %>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+    <div>
+      <%= form.label :price, "Price (₹)", class: "form-label", style: "display: block; margin-bottom: 0.5rem; font-weight: 600;" %>
+      <%= form.number_field :price, step: "0.01", class: "form-input", style: "width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px;", required: true %>
+    </div>
+    
+    <div>
+      <%= form.label :category_id, class: "form-label", style: "display: block; margin-bottom: 0.5rem; font-weight: 600;" %>
+      <%= form.collection_select :category_id, Category.all, :id, :name, {}, { class: "form-select", style: "width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px;" } %>
+    </div>
+  </div>
+
+  <div style="margin-bottom: 1.5rem;">
+    <%= form.label :image, "Product Image", class: "form-label", style: "display: block; margin-bottom: 0.5rem; font-weight: 600;" %>
+    <%= form.file_field :image, class: "form-input", style: "width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; background: white;" %>
+    <p style="margin: 0.5rem 0 0; font-size: 0.85rem; color: #888;">Upload a clear photo (JPG/PNG)</p>
+  </div>
+
+  <div style="margin-bottom: 1.5rem;">
+    <%= form.label :description, class: "form-label", style: "display: block; margin-bottom: 0.5rem; font-weight: 600;" %>
+    <%= form.text_area :description, rows: 4, class: "form-textarea", style: "width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; font-family: inherit;", placeholder: "Short description of the service..." %>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <%= form.submit class: "btn btn-primary", style: "width: 100%; padding: 0.8rem; background: #6A1B9A; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;" %>
+    <%= link_to "Cancel", admin_categories_path, style: "display: block; text-align: center; margin-top: 1rem; color: #666; text-decoration: none;" %>
+  </div>
+<% end %>

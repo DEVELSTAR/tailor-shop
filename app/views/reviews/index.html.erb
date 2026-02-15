@@ -1,0 +1,22 @@
+<div class="container" style="padding: 6rem 0;">
+  <div class="section-title">
+    <p>Testimonials</p>
+    <h2>What Our Clients Say</h2>
+  </div>
+
+  <div class="testimonial-grid">
+    <% @reviews.each do |review| %>
+      <div class="testimonial-card">
+        <div style="color: var(--color-accent); margin-bottom: 1.5rem; font-size: 0.8rem;">
+          <% review.rating.times do %>★<% end %>
+        </div>
+        <p class="testimonial-text">"<%= review.comment %>"</p>
+        <p class="testimonial-author">&mdash; <%= review.reviewer_name %></p>
+      </div>
+    <% end %>
+  </div>
+
+  <div style="text-align: center; margin-top: 6rem;">
+    <%= link_to "Share Your Experience", new_review_path, class: "btn btn-primary" %>
+  </div>
+</div>

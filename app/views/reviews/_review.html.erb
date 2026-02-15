@@ -1,0 +1,10 @@
+<div class="testimonial-card">
+  <div style="color: var(--color-accent); margin-bottom: 1.5rem; font-size: 0.8rem;">
+    <% review.rating.times do %>★<% end %><% (5 - review.rating).times do %>☆<% end %>
+  </div>
+  <p class="testimonial-text">"<%= review.comment %>"</p>
+  <div style="display: flex; justify-content: space-between; align-items: baseline;">
+    <p class="testimonial-author">&mdash; <%= review.reviewer_name %></p>
+    <span style="font-size: 0.7rem; color: var(--color-text-muted); text-transform: uppercase;"><%= time_ago_in_words(review.created_at) %> ago</span>
+  </div>
+</div>

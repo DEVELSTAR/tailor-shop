@@ -1,0 +1,119 @@
+<section id="hero" class="hero">
+  <div class="container" style="position: relative; z-index: 2;">
+    <p style="text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.75rem; margin-bottom: 2rem; color: var(--color-accent); font-weight: 700;">ESTABLISHED BENGALURU</p>
+    <% if @business_info %>
+      <h1><%= @business_info.name %></h1>
+      <p><%= @business_info.description %></p>
+    <% else %>
+      <h1>FASHION PARADISE</h1>
+      <p>Luxury tailoring and bespoke design services for the discerning individual.</p>
+    <% end %>
+    
+    <div class="hero-actions">
+      <a href="#catalogue" class="btn btn-primary">Discover Collections</a>
+      <a href="#contact" class="btn btn-outlined">Visit Atelier</a>
+    </div>
+  </div>
+</section>
+
+<section id="catalogue" class="section container" style="padding: 10rem 0;">
+  <div class="section-title">
+    <p>Services</p>
+    <h2>Our Collections</h2>
+  </div>
+
+  <% @categories.each do |category| %>
+    <div class="category-block" style="margin-bottom: 8rem;">
+      <div style="margin-bottom: 3rem; border-bottom: 1px solid var(--color-border); padding-bottom: 1.5rem; display: flex; align-items: baseline; justify-content: space-between;">
+        <h3 class="category-name" style="margin: 0;"><%= category.name %></h3>
+        <% if category.products.any? %>
+          <span style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em;"><%= pluralize(category.products.count, 'Service') %></span>
+        <% end %>
+      </div>
+      
+      <% if category.description.present? %>
+        <p style="font-size: 1rem; color: var(--color-text-muted); margin-bottom: 4rem; line-height: 1.8; max-width: 800px; font-weight: 300;"><%= category.description %></p>
+      <% end %>
+
+      <div class="product-grid">
+        <% category.products.each do |product| %>
+          <div class="product-card">
+            <div class="product-image-container">
+              <% if product.image.attached? %>
+                <%= image_tag product.image, class: "product-card-image" %>
+              <% else %>
+                <div class="product-card-placeholder">
+                  FASHION PARADISE
+                </div>
+              <% end %>
+            </div>
+            <div class="product-card-info">
+              <h4 class="product-card-name"><%= product.name %></h4>
+              <% if product.description.present? %>
+                <p class="product-card-desc"><%= truncate(product.description, length: 100) %></p>
+              <% end %>
+              <div class="product-card-footer">
+                <span class="product-card-price"><%= number_to_currency(product.price, unit: "₹", precision: 0) %></span>
+                <%= link_to "Enquire", "#contact", class: "product-card-link" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</section>
+
+<section id="reviews" class="testimonials">
+  <div class="container">
+    <div class="section-title">
+      <p style="color: var(--color-accent);">Testimonials</p>
+      <h2 style="color: white;">Voices of Excellence</h2>
+    </div>
+
+    <div class="testimonial-grid">
+      <% @reviews.each do |review| %>
+        <div class="testimonial-card">
+          <p class="testimonial-text">"<%= review.comment %>"</p>
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <p class="testimonial-author">&mdash; <%= review.reviewer_name %></p>
+            <div style="color: var(--color-accent); font-size: 0.7rem; letter-spacing: 2px;">
+              <% review.rating.times do %>★<% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    
+    <div style="text-align: center; margin-top: 6rem;">
+      <%= link_to "Review Your Experience", new_review_path, class: "btn", style: "border-color: rgba(255,255,255,0.3); color: white;" %>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="padding: 10rem 0; text-align: center;">
+  <div class="container">
+    <div class="section-title">
+      <p>Atelier</p>
+      <h2>Find Us</h2>
+    </div>
+    
+    <div class="info-grid">
+      <div class="info-item">
+        <h3 style="font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.5rem;">Location</h3>
+        <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.8;"><%= @business_info&.address || "Bengaluru, Karnataka" %></p>
+      </div>
+      
+      <div class="info-item">
+        <h3 style="font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.5rem;">Hours</h3>
+        <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.8;"><%= @business_info&.hours || "Mon-Sat: 10 AM - 8:30 PM" %></p>
+      </div>
+      
+      <div class="info-item">
+        <h3 style="font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.5rem;">Contact</h3>
+        <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 1rem;">Inquiries and Appointments</p>
+        <a href="tel:+919876543210" class="contact-link"><%= @business_info&.phone || "+91 98765 43210" %></a>
+      </div>
+    </div>
+  </div>
+</section>

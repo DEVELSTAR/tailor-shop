@@ -1,0 +1,66 @@
+<div style="background: white; border-bottom: 1px solid #eee; padding: 1.5rem 0; margin-bottom: 2rem;">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <h1 style="font-family: 'Playfair Display', serif; font-size: 2rem; color: #2D0C3F;">Reviews</h1>
+      <p style="color: #666;">Moderate and manage customer feedback.</p>
+    </div>
+  </div>
+</div>
+
+<div class="admin-card" style="padding: 0; overflow: hidden;">
+  <table class="table" style="margin-bottom: 0;">
+    <thead style="background: #F8F9FA;">
+      <tr>
+        <th style="width: 100px;">Status</th>
+        <th style="width: 120px;">Rating</th>
+        <th>Reviewer</th>
+        <th>Comment</th>
+        <th style="width: 150px;">Date</th>
+        <th style="width: 180px; text-align: right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @reviews.each do |review| %>
+        <tr style="background: <%= review.approved? ? 'transparent' : '#FFFDE7' %>;">
+          <td>
+            <% if review.approved? %>
+              <span class="badge badge-success">Published</span>
+            <% else %>
+              <span class="badge badge-warning">Pending</span>
+            <% end %>
+          </td>
+          <td>
+            <div style="color: #FFB300; font-size: 0.9rem;">
+              <% review.rating.times do %>★<% end %><% (5 - review.rating).times do %>☆<% end %>
+            </div>
+          </td>
+          <td style="font-weight: 600; color: #424242;"><%= review.reviewer_name %></td>
+          <td>
+            <div style="font-size: 0.9rem; color: #616161; line-height: 1.4;">
+              <%= truncate(review.comment, length: 60) %>
+            </div>
+          </td>
+          <td style="font-size: 0.85rem; color: #9E9E9E;">
+            <%= review.created_at.strftime("%b %d, %Y") %>
+          </td>
+          <td style="text-align: right;">
+            <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+              <% if review.approved? %>
+                <%= button_to "Unpublish", admin_review_path(review, review: { approved: false }), method: :patch, class: "btn btn-sm", style: "background: #FFECB3; color: #FF6F00; border: 1px solid #FFE082; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer;" %>
+              <% else %>
+                <%= button_to "Approve", admin_review_path(review, review: { approved: true }), method: :patch, class: "btn btn-sm", style: "background: #C8E6C9; color: #2E7D32; border: 1px solid #A5D6A7; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer;" %>
+              <% end %>
+              
+              <%= button_to "×", admin_review_path(review), method: :delete, form: { data: { turbo_confirm: "Delete this review?" } }, class: "btn btn-sm", style: "background: #FFCDD2; color: #B71C1C; border: 1px solid #EF9A9A; padding: 0.25rem 0.6rem; border-radius: 4px; cursor: pointer;" %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% if @reviews.empty? %>
+    <div style="text-align: center; padding: 3rem; color: #9E9E9E;">
+      No reviews found.
+    </div>
+  <% end %>
+</div>

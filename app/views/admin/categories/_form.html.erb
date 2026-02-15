@@ -1,0 +1,27 @@
+<%= form_with(model: [:admin, category], local: true, class: "admin-card", style: "max-width: 600px; margin-top: 1.5rem;") do |form| %>
+  <% if category.errors.any? %>
+    <div class="alert alert-alert">
+      <h4 style="margin: 0 0 0.5rem 0;"><%= pluralize(category.errors.count, "error") %> found:</h4>
+      <ul style="margin: 0; padding-left: 1.2rem;">
+        <% category.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div style="margin-bottom: 1.5rem;">
+    <%= form.label :name, class: "form-label", style: "display: block; margin-bottom: 0.5rem; font-weight: 600;" %>
+    <%= form.text_field :name, class: "form-input", style: "width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px;", required: true %>
+  </div>
+
+  <div style="margin-bottom: 1.5rem;">
+    <%= form.label :description, class: "form-label", style: "display: block; margin-bottom: 0.5rem; font-weight: 600;" %>
+    <%= form.text_area :description, rows: 3, class: "form-textarea", style: "width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; font-family: inherit;" %>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <%= form.submit class: "btn btn-primary", style: "width: 100%; padding: 0.8rem; background: #6A1B9A; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;" %>
+    <%= link_to "Cancel", admin_categories_path, style: "display: block; text-align: center; margin-top: 1rem; color: #666; text-decoration: none;" %>
+  </div>
+<% end %>

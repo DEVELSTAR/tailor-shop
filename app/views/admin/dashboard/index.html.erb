@@ -1,0 +1,65 @@
+<div class="admin-header">
+  <h1 style="margin: 0; font-family: 'Playfair Display', serif; font-size: 2rem; color: #2D0C3F;">Dashboard</h1>
+  <p style="color: #666; margin: 0;">Welcome back, Admin</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+  <div class="admin-card" style="border-left: 5px solid #AB47BC; display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <h3 style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">Total Reviews</h3>
+      <p style="font-size: 2.5rem; font-weight: 700; color: #2D0C3F; margin: 0;"><%= @reviews_count %></p>
+    </div>
+    <div style="font-size: 2.5rem; opacity: 0.1;">📝</div>
+  </div>
+  
+  <div class="admin-card" style="border-left: 5px solid <%= @pending_reviews > 0 ? '#e53935' : '#43A047' %>; display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <h3 style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">Pending Approval</h3>
+      <p style="font-size: 2.5rem; font-weight: 700; color: <%= @pending_reviews > 0 ? '#e53935' : '#43A047' %>; margin: 0;"><%= @pending_reviews %></p>
+    </div>
+    <div style="font-size: 2.5rem; opacity: 0.1;">⚠️</div>
+  </div>
+  
+  <div class="admin-card" style="border-left: 5px solid #FFA000; display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <h3 style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">Average Rating</h3>
+      <div style="display: flex; align-items: baseline; gap: 0.5rem;">
+        <p style="font-size: 2.5rem; font-weight: 700; color: #2D0C3F; margin: 0;"><%= @average_rating %></p>
+        <span style="color: #FFB300;">★</span>
+      </div>
+    </div>
+    <div style="font-size: 2.5rem; opacity: 0.1;">⭐</div>
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+  <div class="admin-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <h3 style="margin: 0; color: #2D0C3F;">Pending Reviews</h3>
+      <% if @pending_reviews > 0 %>
+        <%= link_to "View All", admin_reviews_path, style: "color: #AB47BC; font-size: 0.9rem; font-weight: 600; text-decoration: none;" %>
+      <% end %>
+    </div>
+    
+    <% if @pending_reviews > 0 %>
+      <div style="background: #FFF8E1; padding: 1rem; border-radius: 8px; border: 1px solid #FFE082; color: #F57F17;">
+        You have <%= pluralize(@pending_reviews, "review") %> waiting for moderation.
+      </div>
+      <div style="margin-top: 1rem;">
+        <%= link_to "Go to Reviews", admin_reviews_path, class: "btn-sm", style: "background: #2D0C3F; color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; display: inline-block;" %>
+      </div>
+    <% else %>
+      <div style="text-align: center; color: #888; padding: 2rem;">
+        <p style="margin: 0;">All caught up! No pending reviews.</p>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="admin-card">
+    <h3 style="margin: 0 0 1rem 0; color: #2D0C3F;">Quick Actions</h3>
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+      <%= link_to "Add New Product", new_admin_category_path, style: "display: block; padding: 0.75rem; background: #F3E5F5; color: #6A1B9A; text-decoration: none; border-radius: 6px; font-weight: 600;" %>
+      <%= link_to "Visit Live Site", root_path, target: "_blank", style: "display: block; padding: 0.75rem; background: #E0E0E0; color: #424242; text-decoration: none; border-radius: 6px; font-weight: 600;" %>
+    </div>
+  </div>
+</div>

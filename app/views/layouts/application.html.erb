@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for?(:title) ? yield(:title) : "Fashion Paradise | Bespoke Tailoring" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#121212">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+
+    <%# Google Fonts: Bodoni Moda (Headings) & Inter (Body) %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600;6..96,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="https://img.icons8.com/ios-filled/50/000000/sewing-machine.png" type="image/png">
+    
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <nav class="main-nav">
+          <a href="#catalogue">Collections</a>
+          <a href="#reviews">Reviews</a>
+        </nav>
+        
+        <div class="logo">
+          <%= link_to root_path do %>
+            FASHION PARADISE
+          <% end %>
+        </div>
+
+        <div class="header-actions">
+          <a href="#contact" class="main-nav a">Visit Us</a>
+          <%= link_to "Consult", "#contact", class: "btn btn-primary btn-sm" %>
+          <button class="mobile-menu-toggle" aria-label="Toggle Menu">
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <%= yield %>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <h3>Fashion Paradise</h3>
+          <p>Elevating personal style through exquisite craftsmanship and bespoke tailoring.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#catalogue">Services</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <h4>Connect</h4>
+          <p>Vinayaka Nagar, HSR Layout<br>Bengaluru, Karnataka</p>
+          <a href="tel:+919876543210" class="contact-link">+91 98765 43210</a>
+        </div>
+      </div>
+      <div class="footer-bottom container">
+        <p>&copy; <%= Time.current.year %> Fashion Paradise. Crafted with precision.</p>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener('turbo:load', () => {
+        const toggle = document.querySelector('.mobile-menu-toggle');
+        const nav = document.querySelector('.main-nav');
+        
+        if (toggle && nav) {
+          toggle.addEventListener('click', () => {
+            nav.classList.toggle('show');
+            toggle.classList.toggle('active');
+            
+            // Toggle body scroll
+            if (nav.classList.contains('show')) {
+              document.body.style.overflow = 'hidden';
+            } else {
+              document.body.style.overflow = '';
+            }
+          });
+          
+          // Close menu on link click
+          nav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+              nav.classList.remove('show');
+              document.body.style.overflow = '';
+            });
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

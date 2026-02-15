@@ -1,0 +1,7 @@
+<h1>Edit Product</h1>
+
+<%= render "form", product: @product, url: admin_product_path(@product) %>
+
+<div style="margin-top: 1rem;">
+  <%= link_to "Back to Categories", admin_categories_path, style: "color: #6c757d; text-decoration: none;" %>
+</div>
