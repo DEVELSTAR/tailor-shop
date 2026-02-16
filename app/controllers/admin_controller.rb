@@ -1,6 +1,7 @@
 class AdminController < ApplicationController
   before_action :require_authentication
   before_action :set_current_user
+  before_action :log_suspicious_requests
   
   helper_method :current_user
   
@@ -22,5 +23,15 @@ class AdminController < ApplicationController
   
   def logged_in?
     session[:user_id].present?
+  end
+  
+  def log_suspicious_requests
+    suspicious_paths = %w[host sync trigger synctriggers]
+    request_path = request.path.downcase
+    
+    if suspicious_paths.any? { |path| request_path.include?(path) }
+      Rails.logger.warn "Suspicious admin request: #{request.method} #{request.path} from #{request.remote_ip}"
+      head :forbidden
+    end
   end
 end

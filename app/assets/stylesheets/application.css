@@ -2,6 +2,8 @@
  * Minimalist Luxury Fashion Theme - Refined
  */
 
+@import url('https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
+
 :root {
   --color-bg: #FFFFFF;
   --color-bg-alt: #FAFAF9; /* Soft Off-White */
@@ -570,4 +572,52 @@ h1, h2, h3, h4, h5, h6 {
   
   .footer-grid { grid-template-columns: 1fr; gap: 4rem; }
   .catalogue-grid { grid-template-columns: 1fr; }
+}
+
+/* Mobile Responsive Enhancements */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .header-inner {
+    grid-template-columns: 1fr;
+    height: auto;
+    padding: 1rem 0;
+  }
+  
+  .logo {
+    grid-column: 1;
+    text-align: center;
+  }
+  
+  .main-nav {
+    grid-column: 1;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .header-actions {
+    grid-column: 1;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .main-nav a {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
+    text-align: center;
+  }
+  
+  .mobile-menu-toggle { 
+    display: flex; 
+    position: relative;
+    z-index: 2001; /* Above overlay */
+  }
+  
+  .site-header {
+    border: none;
+    position: relative;
+  }
 }
