@@ -7,7 +7,7 @@ gem "propshaft"
 # Use postgresql as database for Active Record
 gem "pg", "~> 1.1"
 # Use sqlite3 as database for Active Record (fallback)
-gem "sqlite3", "~> 2.1"
+gem "sqlite3", "~> 2.9"
 # Use Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
